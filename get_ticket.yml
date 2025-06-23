@@ -5,9 +5,9 @@
 
   vars:
     ticket_number:
-   SN_HOST: 
-   SN_USERNAME: 
-   SN_PASSWORD:
+    SN_HOST: 
+    SN_USERNAME: 
+    SN_PASSWORD:
 
   tasks:
     # Notice the 'name' task is now indented with 2 spaces from 'tasks:'
