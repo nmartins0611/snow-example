@@ -1,0 +1,28 @@
+---
+- name: Create Service Ticket
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    sn_host: 
+    sn_user:
+    sn_password:
+
+  tasks:
+   - name: Create Ticket
+     servicenow.itsm.incident:
+      instance:
+       host: "{{ sn_host }}"
+       username: "{{ sn_user }}"
+       password: "{{ sn_password }}"
+      state: New
+      caller: Admin
+#      Short_description: CVE alert has been detected
+      impact: low
+      urgency: low
+     register: ticket_details
+     delegate_to: localhost
+
+   - name: print
+     debug:
+      msg: "{{ ticket_details }}"
