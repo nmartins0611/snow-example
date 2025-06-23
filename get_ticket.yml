@@ -5,9 +5,9 @@
 
   vars:
     ticket_number:
-    sn_host:
-    sn_user:
-    sn_password:
+   SN_HOST: 
+   SN_USERNAME: 
+   SN_PASSWORD:
 
   tasks:
     # Notice the 'name' task is now indented with 2 spaces from 'tasks:'
@@ -17,9 +17,9 @@
         # 'instance' is indented with 6 spaces
         instance:
           # 'host', 'username', 'password' are indented with 8 spaces
-          host: "{{ sn_host }}"
-          username: "{{ sn_user }}"
-          password: "{{ sn_password }}"
+          host: "{{ SN_HOST }}"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
         # 'number', 'register', 'delegate_to' are peers to 'instance' and thus indented 6 spaces
         number: "{{ ticket_number }}"
       register: ticket_details
