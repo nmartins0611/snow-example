@@ -2,81 +2,67 @@
 - name: Gather CVE Details
   hosts: localhost
   gather_facts: false
-
-
   vars:
-   advisory_id: 
-   rhsm_username:
-   rhsm_password:
-   SN_HOST: 
-   SN_USERNAME: 
-   SN_PASSWORD:
-
-
+    advisory_id: 
+    rhsm_username:
+    rhsm_password:
+    SN_HOST: 
+    SN_USERNAME: 
+    SN_PASSWORD:
   tasks:
-
-  tasks:
-
-
-     - name: Retrieve related CVEs from Advisories
-       ansible.builtin.uri:
+    - name: Retrieve related CVEs from Advisories
+      ansible.builtin.uri:
         url: "https://console.redhat.com/api/patch/v3/advisories/{{ advisory_id }}/systems?page=1&perPage=20&sort=-last_upload&offset=0&limit=20"
         method: GET
         url_username: "{{ rhsm_username }}"
         url_password: "{{ rhsm_password }}"
         force_basic_auth: true
         status_code: 200
-       register: cves_list
+      register: cves_list
 
-
-     - name: Gather CVE details
-       ansible.builtin.uri:
+    - name: Gather CVE details
+      ansible.builtin.uri:
         url: "https://console.redhat.com/api/patch/v3/advisories/{{ advisory_id }}"
         method: GET
         url_username: "{{ rhsm_username }}"
         url_password: "{{ rhsm_password }}"
         force_basic_auth: true
         status_code: 200
-       register: cve_details
+      register: cve_details
 
-     - name: Extract type
-       ansible.builtin.set_fact:
+    - name: Extract type
+      ansible.builtin.set_fact:
         cve_type: "{{ cve_details.json.data.attributes.advisory_type_name }}"
         cves_description: "{{ cve_details.json.data.attributes.description }}"
         solution: "{{ cve_details.json.data.attributes.solution }}"
         cves: "{{ cve_details.json.data.attributes.cves }}"
-      
-     - name: Create incident
-       servicenow.itsm.incident:
+
+    - name: Create incident
+      servicenow.itsm.incident:
         instance:
           host: "{{ SN_HOST }}"
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
         state: new
         caller: "{{ SN_USERNAME }}"
-        short_description: New Advisory CVE Type - "{{ cve_type }}"
+        short_description: "New Advisory CVE Type - {{ cve_type }}"
         description: |
-      
-           Alert Type: "{{ cve_type }}"  CVE:  "{{ cves }}"
-
-
-           CVE Description: "{{ cves_description }}"
-
-
-           Possible Solution: "{{ solution }}"
+          Alert Type: "{{ cve_type }}"  CVE:  "{{ cves }}"
+          CVE Description: "{{ cves_description }}"
+          Possible Solution: "{{ solution }}"
         urgency: high
-       register: new_incident
+      register: new_incident
 
-     - name: Retrieve incidents by number
-       servicenow.itsm.incident_info:
+    - name: Retrieve incidents by number
+      servicenow.itsm.incident_info:
         instance:
-         host: "{{ SN_HOST }}"
-         username: "{{ SN_USERNAME }}"
-         password: "{{ SN_PASSWORD }}"
-        number: "{{ ticket_number }}"
-       register: result
-       delegate_to: localhost
+          host: "{{ SN_HOST }}"
+          username: "{{ SN_USERNAME }}"
+          password: "{{ SN_PASSWORD }}"
+        number: "{{ new_incident.record.number }}"
+      register: result
+      delegate_to: localhost
 
-     - name: print
-       debug:
-        msg: "{{ result }}
+    - name: Print incident details
+      ansible.builtin.debug:
+        msg: "{{ result }}"
