@@ -39,7 +39,6 @@
         status_code: 200
        register: cve_details
 
-
      - name: Extract type
        ansible.builtin.set_fact:
         cve_type: "{{ cve_details.json.data.attributes.advisory_type_name }}"
@@ -68,7 +67,6 @@
         urgency: high
        register: new_incident
 
-
      - name: Retrieve incidents by number
        servicenow.itsm.incident_info:
         instance:
@@ -78,7 +76,6 @@
         number: "{{ ticket_number }}"
        register: result
        delegate_to: localhost
-
 
      - name: print
        debug:
