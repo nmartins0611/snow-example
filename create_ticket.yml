@@ -4,17 +4,17 @@
   gather_facts: no
 
   vars:
-    sn_host: 
-    sn_user:
-    sn_password:
+   SN_HOST: 
+   SN_USERNAME: 
+   SN_PASSWORD:
 
   tasks:
    - name: Create Ticket
      servicenow.itsm.incident:
       instance:
-       host: "{{ sn_host }}"
-       username: "{{ sn_user }}"
-       password: "{{ sn_password }}"
+       host: "{{ SN_HOST }}"
+       username: "{{ SN_USERNAME }}"
+       password: "{{ SN_PASSWORD }}"
       state: New
       caller: Admin
 #      Short_description: CVE alert has been detected
