@@ -7,6 +7,7 @@
    SN_HOST: 
    SN_USERNAME: 
    SN_PASSWORD:
+   description:
 
   tasks:
    - name: Create Ticket
@@ -17,7 +18,7 @@
        password: "{{ SN_PASSWORD }}"
       state: New
       caller: Admin
-#      Short_description: CVE alert has been detected
+      Short_description: "{{ description }}"
       impact: low
       urgency: low
      register: ticket_details
