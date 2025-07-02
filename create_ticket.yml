@@ -18,7 +18,7 @@
        password: "{{ SN_PASSWORD }}"
       state: New
       caller: Admin
-      Short_description: "{{ description }}"
+      short_description: "{{ description }}"
       impact: low
       urgency: low
      register: ticket_details
