@@ -10,22 +10,16 @@
     SN_PASSWORD:
 
   tasks:
-    # Notice the 'name' task is now indented with 2 spaces from 'tasks:'
     - name: Get Ticket Info
-      # This module is indented with 4 spaces from '- name:'
       servicenow.itsm.incident_info:
-        # 'instance' is indented with 6 spaces
         instance:
-          # 'host', 'username', 'password' are indented with 8 spaces
           host: "{{ SN_HOST }}"
           username: "{{ SN_USERNAME }}"
           password: "{{ SN_PASSWORD }}"
-        # 'number', 'register', 'delegate_to' are peers to 'instance' and thus indented 6 spaces
         number: "{{ ticket_number }}"
       register: ticket_details
       delegate_to: localhost
 
-    # This 'print' task is a peer to 'Get Ticket Info', so it starts at the same level
     - name: print
       debug:
         msg: "{{ ticket_details }}"
