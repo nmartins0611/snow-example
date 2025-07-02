@@ -17,7 +17,6 @@
        username: "{{ SN_USERNAME }}"
        password: "{{ SN_PASSWORD }}"
       state: New
-      caller: Admin
       short_description: "{{ description }}"
       impact: low
       urgency: low
